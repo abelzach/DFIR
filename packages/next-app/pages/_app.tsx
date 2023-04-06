@@ -12,12 +12,12 @@ import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 
 const { chains, provider } = configureChains(
-  [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum],
+  [chain.mainnet, chain.polygon, chain.polygonMumbai],
   [publicProvider()]
 );
 
 const { connectors } = getDefaultWallets({
-  appName: "Starter DApp",
+  appName: "Decentralized FIR system",
   chains
 });
 
