@@ -1,5 +1,39 @@
+import CaseStorage from '../abi/CaseStorage.json'
+import {useState} from 'react';
+import { NFTStorage, File } from 'nft.storage'
+import { Contract, providers, utils } from 'ethers';
+
 
 export default function Evidence() {
+    const[caseid,setCaseid] = useState<string>();
+    const[desc,setDesc] = useState<string>();
+    const[img,setImg] = useState<Blob>();
+
+    const client =  new NFTStorage({ token: process.env.TOKEN })
+
+
+    const handleSubmit = async (e:any) => {
+        e.preventDefault()
+        const obj = {
+            name:"fir",
+            description:"fir_desc",
+            image: new Blob,
+            caseid,
+            desc,
+            img
+     
+        } 
+        const metadata = await client.store(obj as any)
+        console.log('Metadata URI: ', metadata)
+
+        const provider = new providers.Web3Provider(window.ethereum)
+        const contract = new Contract("0x628f0887dF785315a560d2248a579627FCa65056", CaseStorage.abi, provider)
+        console.log(provider)
+        const signer = await provider.getSigner();
+        const tx = await contract.connect(signer).setEvidence(utils.id(caseid), metadata.ipnft)
+        const receipt = await tx.wait()
+        console.log(receipt)
+    }
     return (
         <div className='font-inter'>    
         <div className='flex flex-wrap h-screen flex-row justify-between'>
@@ -30,13 +64,13 @@ export default function Evidence() {
             <h1 className='text-4xl font-bold mt-4'>FIR Registration</h1>
                  <p className='text-xl font-normal mt-2 text-slate-500'>Fill in the details regarding the report</p>
                  <br/>
-                 <form className="w-ful">
+                 <form className="w-ful" onSubmit={handleSubmit}>
                   <div className="flex flex-wrap -mx-3 mb-6">
                         <div className="w-full px-3">
                         <label className="block uppercase tracking-wide text-gray-900 text-base font-normal mb-2" >
                             CASE ID
                         </label>
-                        <input className="appearance-none w-11/12 bg-gray-200 text-gray-900 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="ID" type="text"/>
+                        <input className="appearance-none w-11/12 bg-gray-200 text-gray-900 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="ID" type="text" value={caseid} onChange={(e)=>setCaseid(e.target.value)}/>
                         </div>
                     </div>
                     <div>
@@ -56,7 +90,7 @@ export default function Evidence() {
                          transition
                          ease-in-out
                          m-0
-                         focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" type="file" id="formFile" />
+                         focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" type="file" id="formFile" value={img} onChange={(e)=>setImg(e.target.value)} />
                      </div>
                      </div>
                     <div className="flex flex-wrap -mx-3 my-7">
@@ -64,13 +98,13 @@ export default function Evidence() {
                         <label className="block uppercase tracking-wide text-gray-900 text-base font-normal mb-2">
                             EVIDENCE DESCRIPTION
                         </label>
-                        <textarea className=" no-resize appearance-none block w-11/12 bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 h-48 resize-none" id="Desc"></textarea>
+                        <textarea className=" no-resize appearance-none block w-11/12 bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 h-48 resize-none" id="Desc" value={desc} onChange={(e)=>setDesc(e.target.value)}></textarea>
                         </div>
                     </div>
     
                     <div className="flex justify-end md:flex md:items-center">
                         <div className="mr-24">
-                        <button className="shadow bg-gradient-to-br from-teal-200 via-teal-400 to-teal-800 w-48 h-12 mt-4 text-slate-100focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
+                        <button className="shadow bg-gradient-to-br from-teal-200 via-teal-400 to-teal-800 w-48 h-12 mt-4 text-slate-100focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="submit">
                             Submit
                         </button>
                         </div>

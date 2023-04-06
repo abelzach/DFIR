@@ -38,8 +38,8 @@ export default function FIR() {
     const handleSubmit = async (e:any) => {
         e.preventDefault()
         const obj = {
-            name:"",
-            description:"",
+            name:"fir",
+            description:"fir_desc",
             image: new Blob,
             firId,
             nameA,
@@ -61,7 +61,8 @@ export default function FIR() {
 
         const provider = new providers.Web3Provider(window.ethereum)
         const contract = new Contract("0x628f0887dF785315a560d2248a579627FCa65056", CaseStorage.abi, provider)
-        console.log(provider)
+        //console.log(provider)
+        console.log(metadata.ipnft)
         const signer = await provider.getSigner();
         const tx = await contract.connect(signer).setCase(utils.id(firId), metadata.ipnft)
         const receipt = await tx.wait()
