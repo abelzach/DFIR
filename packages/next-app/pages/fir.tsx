@@ -2,7 +2,6 @@ import CaseStorage from '../abi/CaseStorage.json'
 import {useState} from 'react';
 import { NFTStorage, File, Blob} from 'nft.storage'
 import { Contract, providers, utils } from 'ethers';
-import { packToBlob } from 'ipfs-car/pack/blob'
 
 export default function FIR() {
     const[firId,setFirId] = useState<string>();
@@ -57,7 +56,7 @@ export default function FIR() {
         // const cid  = await client.storeBlob(someData)
         // console.log(cid);
 
-        const jsonData = {firId:firId, nameA:nameA, nameC:nameC,detName:detName,parent:parent,address:address,contact:contact,rel:rel,desc:desc,ipc:ipc};
+        const jsonData = {firId:firId,nameA:nameA, nameC:nameC,detName:detName,parent:parent,address:address,contact:contact,rel:rel,desc:desc,ipc:ipc};
         const blob = new Blob([JSON.stringify(jsonData)], {type: "application/json"});
         const cid = await client.storeBlob(blob)
         console.log(cid)
@@ -78,12 +77,17 @@ export default function FIR() {
         // console.log(isSuccess)
 
         const provider = new providers.Web3Provider(window.ethereum)
-        const contract = new Contract("0x628f0887dF785315a560d2248a579627FCa65056", CaseStorage.abi, provider)
-        //console.log(provider)
+        const contract = new Contract("0x2050127b520b4a2b796b1ac97A3FA1e4B2bc972C", CaseStorage.abi, provider)
+        // console.log(provider)
         const signer = await provider.getSigner();
-        const tx = await contract.connect(signer).setCase(utils.id(firId), cid)
+        
+        const tx = await contract.connect(signer).setCase(firId, cid)
+        console.log(utils.id(firId))
         const receipt = await tx.wait()
         console.log(receipt)
+        
+        const ab = await contract.connect(signer).getCase(firId)
+        console.log(ab);
     }
 
     return (     

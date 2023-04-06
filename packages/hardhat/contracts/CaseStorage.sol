@@ -3,21 +3,44 @@ pragma solidity ^0.8.9;
 
 contract CaseStorage {
     mapping (bytes32 => string) public cases;
-    mapping (bytes32 => string) public evidences;
+    mapping (bytes32 => Evidences) public evidences;
 
-    function setCase(bytes32 caseId, string memory ipfsHash) public {
-        cases[caseId] = ipfsHash;
+    string[] private arrayFir;
+    string[] private arrayEvidence;
+
+    struct Evidences {
+        string caseId;
+        string cid;
+        string desc;
     }
 
-    function getCase(bytes32 caseId) public view returns (string memory) {
-        return cases[caseId];
+    function convertStrToBytes32(string memory str) public pure returns (bytes32) {
+        return keccak256(abi.encode(str));
     }
 
-    function setEvidence(bytes32 caseId, string memory ipfsHash) public {
-        evidences[caseId] = ipfsHash;
+    function setCase(string memory caseId, string memory ipfsHash) public {
+        arrayFir.push(caseId);
+        cases[convertStrToBytes32(caseId)] = ipfsHash;
     }
 
-    function getEvidence(bytes32 caseId) public view returns (string memory) {
-        return evidences[caseId];
+    function getCase(string memory caseId) public view returns (string memory) {
+        return cases[convertStrToBytes32(caseId)];
+    }
+
+    function casesReturn() public view returns(string[] memory) {
+        return arrayFir;
+    }
+
+    function evidencesReturn() public view returns(string[] memory) {
+        return arrayEvidence;
+    }
+
+    function setEvidence(string memory caseId, Evidences calldata evid) public {
+        arrayEvidence.push(caseId);
+        evidences[convertStrToBytes32(caseId)] = evid;
+    }
+
+    function getEvidence(string memory caseId) public view returns (Evidences memory) {
+        return evidences[convertStrToBytes32(caseId)];
     }
 }

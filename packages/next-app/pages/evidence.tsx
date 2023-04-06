@@ -8,9 +8,10 @@ import { AnyNsRecord } from 'dns';
 export default function Evidence() {
     const[caseid,setCaseid] = useState<string>();
     const [files, setFiles] = useState([])
+    const [desc,setDesc] = useState<string>();
     
     // const client =  new NFTStorage({ token: process.env.TOKEN })
-    const client = new Web3Storage({  token: process.env.TOKEN })
+    const client = new Web3Storage({  token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDBDODZiOWMyZjMzNWYxNjUwMWQ0OEE2M2IxQmRmRDE1QjFGRjJCMjYiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NzY2NTE3NDUxNDcsIm5hbWUiOiJGSVIifQ.vA-ohq0boeAc_wvjsabh3S1Yf2b53TgJETMb6_bdMTo' })
 
     async function handleSubmit (event) {
         event.preventDefault()
@@ -19,6 +20,35 @@ export default function Evidence() {
         });
           
         console.log(cid)
+
+        // const res = await client.get(cid);
+        // const file = await res.files();
+        // for (const f of file) {
+        //     console.log(`${f.cid} ${f.name} `);
+        // }
+        // let content = []
+        // for await (const upload of client.list()) {
+        //         content.push(upload.name)
+        //         content.push(upload.cid)
+        // }
+        // console.log(content)
+        const obj = {caseId:caseid,cid:cid, desc:desc}
+        const provider = new providers.Web3Provider(window.ethereum)
+        const contract = new Contract("0x2050127b520b4a2b796b1ac97A3FA1e4B2bc972C", CaseStorage.abi, provider)
+        // console.log(provider)
+        const signer = await provider.getSigner();
+        
+        const tx = await contract.connect(signer).setEvidence(caseid, obj)
+        const receipt = await tx.wait()
+        console.log(receipt)
+        
+        // for await (const upload of client.list()) {
+        //     console.log(`${upload.name} - cid: ${upload.cid} - size: ${upload.dagSize}`)
+        // }
+
+        const ab = await contract.connect(signer).getEvidence(caseid)
+        console.log(ab);
+          
     }
     // const handleSubmit = async (e:any) => {
     //     e.preventDefault()
@@ -92,7 +122,14 @@ export default function Evidence() {
                          
                          </div>
                      </div>
-                    
+                     <div className="flex flex-wrap -mx-3 my-7">
+                        <div className="w-full px-3">
+                        <label className="block uppercase tracking-wide text-gray-900 text-base font-normal mb-2">
+                            EVIDENCE DESCRIPTION
+                        </label>
+                        <textarea className=" no-resize appearance-none block w-11/12 bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 h-48 resize-none" id="Desc" value={desc} onChange={(e)=>setDesc(e.target.value)}></textarea>
+                        </div>
+                    </div>
     
                     <div className="flex justify-end md:flex md:items-center">
                         <div className="mr-24">

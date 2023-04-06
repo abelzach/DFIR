@@ -1,7 +1,8 @@
 import { Card, Stack, StackDivider, Box, Heading, Text, CardHeader, SimpleGrid } from '@chakra-ui/react'
 import {FIR} from './firdata'
-
-
+import { Contract, providers, utils } from 'ethers';
+import CaseStorage from '../abi/CaseStorage.json'
+import { useEffect, useState } from 'react';
 
 interface FIRs {
     "fir_no" : number,
@@ -18,9 +19,43 @@ interface FIRs {
 interface FIR_Props extends Array<FIRs>{};
 
 var FIRCard: FIR_Props = FIR;
-console.log(FIRCard);
+// console.log(FIRCard);
 
 export default function firCards() {
+
+    const [arrFir, setArrFir] = useState<any[]>([])
+    useEffect(() => {
+        //Runs on the first render
+        async function  getFir() {
+
+            const provider = new providers.Web3Provider(window.ethereum)
+            const contract = new Contract("0x2050127b520b4a2b796b1ac97A3FA1e4B2bc972C", CaseStorage.abi, provider)
+            // console.log(provider)
+            const signer = await provider.getSigner();
+            
+            const array = await contract.connect(signer).casesReturn()
+            // setArrFir(array)
+            let dataArray = []
+
+            for(let element of array) {
+                // console.log(element)
+                const ipfs = await contract.connect(signer).getCase(element)
+                const resp = await fetch(`https://${ipfs}.ipfs.nftstorage.link/`)
+                const data = await resp.json()
+                dataArray.push(data)
+                // console.log(dataArray)
+            }
+            // console.log(dataArray)
+            setArrFir(dataArray)    
+            console.log(arrFir)
+        }
+        getFir();
+        console.log(arrFir)
+        //And any time any dependency value changes
+      }, [arrFir.length]);
+
+    
+
     return (
         <div className='font-inter'>
         <div className='flex flex-col'>
@@ -63,9 +98,9 @@ export default function firCards() {
                 <div className='mx-10 my-8'>
                 <SimpleGrid spacing={10} templateColumns='repeat(auto-fill, minmax(300px, 4fr))'>
 
-                    {FIRCard.map(evi => <Card> 
+                    {arrFir.map(evi => (<Card> 
                     <CardHeader>
-                        <Heading size='md'>FIR ID {evi.fir_no}</Heading>
+                        <Heading size='md'>FIR ID {evi.firId}</Heading>
                     </CardHeader>
 
                     <Stack divider={<StackDivider />} spacing='4'>
@@ -85,7 +120,7 @@ export default function firCards() {
                         Name of the Complainant
                         </Heading>
                         <Text pt='2' fontSize='sm'>
-                        {evi.name_complainant}
+                        {evi.nameC}
                         </Text>
                     </Box>
 
@@ -95,16 +130,16 @@ export default function firCards() {
                         Person Accussed
                         </Heading>
                         <Text pt='2' fontSize='sm'>
-                        {evi.name_accused}
+                        {evi.nameA}
                         </Text>
                     </Box>
 
                     <Box>
                         <Heading size='xs' textTransform='uppercase'>
-                        Person Accused
+                         DESC
                         </Heading>
                         <Text pt='2' fontSize='sm'>
-                        {evi.name_accused}
+                        {evi.desc}
                         </Text>
                     </Box>
 
@@ -113,7 +148,7 @@ export default function firCards() {
                         Applicant Detail
                         </Heading>
                         <Text pt='2' fontSize='sm'>
-                        {evi.applicant_detail_name}
+                        {evi.detName}
                         </Text>
                     </Box>
 
@@ -122,7 +157,7 @@ export default function firCards() {
                         Applicant's Parentage
                         </Heading>
                         <Text pt='2' fontSize='sm'>
-                        {evi.applicant_detail_parentage}
+                        {evi.parent}
                         </Text>
                     </Box>
 
@@ -131,7 +166,7 @@ export default function firCards() {
                         Applicant's Address
                         </Heading>
                         <Text pt='2' fontSize='sm'>
-                        {evi.applicant_detail_address}
+                        {evi.address}
                         </Text>
                     </Box>
 
@@ -140,7 +175,7 @@ export default function firCards() {
                         Applicant's Contact detail
                         </Heading>
                         <Text pt='2' fontSize='sm'>
-                        {evi.applicant_detail_contact_no}
+                        {evi.contact}
                         </Text>
                     </Box>
 
@@ -149,14 +184,15 @@ export default function firCards() {
                         Applicant's Relationship with Accussed
                         </Heading>
                         <Text pt='2' fontSize='sm'>
-                        {evi.applicant_relationship_accussed}
+                        {evi.rel}
                         </Text>
                     </Box>
                     </Stack>
                  
-                </Card>                     
+                </Card>     
+                )                
         )
-}
+    }
 
 
     
