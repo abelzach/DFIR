@@ -145,7 +145,6 @@ const Home: NextPage = () => {
         <p>Decentralized FIR system - Main project</p>
       </footer>
     </div> */}
-    
 <nav className="sm:px-4 py-2.5 opacity-100">
   <div className="container flex px-16 flex-wrap items-center justify-between mx-auto">
     <a href="/" className="flex items-center">
@@ -156,6 +155,11 @@ const Home: NextPage = () => {
       <li className='mt-2'>
       <a href="/fir" className="mx-5 my-5">
             FIR Registeration Portal
+      </a>
+      </li>
+      <li className='mt-2'>
+      <a href="/dashboard" className="mx-5 my-5">
+            Dashboard
       </a>
       </li>
       <li className='mt-2'>
@@ -174,7 +178,7 @@ const Home: NextPage = () => {
           </a>
           </li>
         <li>
-          <button onClick={requestAccount} className="block py-2 pl-3 pr-4 text-black border-2 border-black">Connect wallet</button>
+          <button onClick={requestAccount} className="block py-2 pl-3 pr-4 text-black border-2 border-black translate-x-6">{walletAddress === "" ? "Connect Wallet" : "Logged in as " + walletAddress.substring(0,8) + "..." } </button>
         </li>
       </ul>
     </div>

@@ -21,7 +21,5 @@ export function middleware(request: NextRequest) {
     return NextResponse.rewrite(new URL('/', request.url))
   }
 
-  // if (request.nextUrl.pathname.startsWith('/dashboard')) {
-  //   return NextResponse.rewrite(new URL('/dashboard/user', request.url))
-  // }
+
 }
