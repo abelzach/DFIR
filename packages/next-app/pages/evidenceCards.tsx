@@ -1,5 +1,6 @@
 import { Card, Stack, Image, Heading, Text, CardBody, SimpleGrid } from '@chakra-ui/react'
 import {Evidences} from './evidencedata'
+import { Web3Storage } from 'web3.storage'
 
 
 

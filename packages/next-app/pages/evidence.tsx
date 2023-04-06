@@ -1,20 +1,27 @@
 import CaseStorage from '../abi/CaseStorage.json'
 import {useState} from 'react';
-import { NFTStorage, File } from 'nft.storage'
+import { Web3Storage } from 'web3.storage'
 import { Contract, providers, utils } from 'ethers';
 import { AnyNsRecord } from 'dns';
 
 
 export default function Evidence() {
     const[caseid,setCaseid] = useState<string>();
-    const[desc,setDesc] = useState<string>();
-    const[img,setImg] = useState<Blob>();
+    const [files, setFiles] = useState([])
+    
+    // const client =  new NFTStorage({ token: process.env.TOKEN })
+    const client = new Web3Storage({  token: process.env.TOKEN })
 
-    const client =  new NFTStorage({ token: process.env.TOKEN })
-
-
-    const handleSubmit = async (e:any) => {
-        e.preventDefault()
+    async function handleSubmit (event) {
+        event.preventDefault()
+        const cid = await client.put(files, { 
+            name: caseid,
+        });
+          
+        console.log(cid)
+    }
+    // const handleSubmit = async (e:any) => {
+    //     e.preventDefault()
         // const obj = {
         //     name:caseid,
         //     description:desc,
@@ -24,21 +31,21 @@ export default function Evidence() {
         // const metadata = await client.store(obj)
         // console.log('Metadata URI: ', metadata)
 
-        const jsonData = {caseid:caseid,desc:desc,img:img};
-        const blob = new Blob([img]);
-        console.log(img);
+        // const jsonData = {caseid:caseid,desc:desc,img:img};
+        // const blob = new Blob([img]);
+        // console.log(img);
 
-        const cid = await client.storeBlob(blob)
-        console.log(cid)
+        // const cid = await client.storeBlob(blob)
+        // console.log(cid)
 
-        const provider = new providers.Web3Provider(window.ethereum)
-        const contract = new Contract("0x628f0887dF785315a560d2248a579627FCa65056", CaseStorage.abi, provider)
-        console.log(provider)
-        const signer = await provider.getSigner();
-        const tx = await contract.connect(signer).setEvidence(utils.id(caseid), cid)
-        const receipt = await tx.wait()
-        console.log(receipt)
-    }
+        // const provider = new providers.Web3Provider(window.ethereum)
+        // const contract = new Contract("0x628f0887dF785315a560d2248a579627FCa65056", CaseStorage.abi, provider)
+        // console.log(provider)
+        // const signer = await provider.getSigner();
+        // const tx = await contract.connect(signer).setEvidence(utils.id(caseid), cid)
+        // const receipt = await tx.wait()
+        // console.log(receipt)
+    //}
     return (
         <div className='font-inter'>    
         <div className='flex flex-wrap h-screen flex-row justify-between'>
@@ -80,32 +87,12 @@ export default function Evidence() {
                     </div>
                     <div>
                      <div className="w-11/12">
-                         <label className="form-label inline-block uppercase tracking-wide text-gray-900 text-base font-normal mb-2">UPLOAD FILE</label>
-                         <input className="form-control
-                         block
-                         w-full
-                         px-3
-                         py-1.5
-                         text-base
-                         font-normal
-                         text-gray-700
-                         bg-white bg-clip-padding
-                         border border-solid border-gray-300
-                         rounded
-                         transition
-                         ease-in-out
-                         m-0
-                         focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" type="file" id="formFile" value={img} onChange={(e)=>setImg(e.target.value)} />
+                     <label htmlFor='filepicker'>Pick files to store</label>
+                    <input type='file' id='filepicker' name='fileList' onChange={e => setFiles(e.target.files as any)} multiple required />
+                         
+                         </div>
                      </div>
-                     </div>
-                    <div className="flex flex-wrap -mx-3 my-7">
-                        <div className="w-full px-3">
-                        <label className="block uppercase tracking-wide text-gray-900 text-base font-normal mb-2">
-                            EVIDENCE DESCRIPTION
-                        </label>
-                        <textarea className=" no-resize appearance-none block w-11/12 bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 h-48 resize-none" id="Desc" value={desc} onChange={(e)=>setDesc(e.target.value)}></textarea>
-                        </div>
-                    </div>
+                    
     
                     <div className="flex justify-end md:flex md:items-center">
                         <div className="mr-24">
