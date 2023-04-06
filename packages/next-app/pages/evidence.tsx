@@ -2,6 +2,7 @@ import CaseStorage from '../abi/CaseStorage.json'
 import {useState} from 'react';
 import { NFTStorage, File } from 'nft.storage'
 import { Contract, providers, utils } from 'ethers';
+import { AnyNsRecord } from 'dns';
 
 
 export default function Evidence() {
@@ -14,23 +15,27 @@ export default function Evidence() {
 
     const handleSubmit = async (e:any) => {
         e.preventDefault()
-        const obj = {
-            name:"fir",
-            description:"fir_desc",
-            image: new Blob,
-            caseid,
-            desc,
-            img
+        // const obj = {
+        //     name:caseid,
+        //     description:desc,
+        //     image: new File([img], img as any, { type: 'image/png' })
      
-        } 
-        const metadata = await client.store(obj as any)
-        console.log('Metadata URI: ', metadata)
+        // } 
+        // const metadata = await client.store(obj)
+        // console.log('Metadata URI: ', metadata)
+
+        const jsonData = {caseid:caseid,desc:desc,img:img};
+        const blob = new Blob([img]);
+        console.log(img);
+
+        const cid = await client.storeBlob(blob)
+        console.log(cid)
 
         const provider = new providers.Web3Provider(window.ethereum)
         const contract = new Contract("0x628f0887dF785315a560d2248a579627FCa65056", CaseStorage.abi, provider)
         console.log(provider)
         const signer = await provider.getSigner();
-        const tx = await contract.connect(signer).setEvidence(utils.id(caseid), metadata.ipnft)
+        const tx = await contract.connect(signer).setEvidence(utils.id(caseid), cid)
         const receipt = await tx.wait()
         console.log(receipt)
     }
