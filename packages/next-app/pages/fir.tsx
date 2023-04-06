@@ -1,8 +1,7 @@
-import { useContractWrite, usePrepareContractWrite } from 'wagmi'
 import CaseStorage from '../abi/CaseStorage.json'
 import {useState} from 'react';
 import { NFTStorage, File } from 'nft.storage'
-import {sha256} from 'js-sha256'
+import { Contract, providers, utils } from 'ethers';
 
 export default function FIR() {
     const[firId,setFirId] = useState<string>();
@@ -18,14 +17,23 @@ export default function FIR() {
 
     const client =  new NFTStorage({ token: process.env.TOKEN })
 
-    const { config } = usePrepareContractWrite({
-        address: '0x628f0887dF785315a560d2248a579627FCa65056',
-        abi: CaseStorage.abi,
-        functionName: 'setCase',
+    // const { config } = usePrepareContractWrite({
+    //     mode: 'recklesslyUnprepared',
+    //     address: '0x628f0887dF785315a560d2248a579627FCa65056',
+    //     abi: CaseStorage.abi,
+    //     functionName: 'setCase',
 
-      }as any)
+    //   }as any)
 
-      const { data, isLoading, isSuccess, write } = useContractWrite(config)
+
+    //   const contract = useContract({
+    //     address: '0x628f0887dF785315a560d2248a579627FCa65056',
+    //     abi: CaseStorage.abi,
+    //     signerOrProvider : signer,
+    //   }as any)
+
+    
+
     
     const handleSubmit = async (e:any) => {
         e.preventDefault()
@@ -47,11 +55,17 @@ export default function FIR() {
         const metadata = await client.store(obj as any)
         console.log('Metadata URI: ', metadata)
 
-        //sha256(firId),metadata.ipnft
-        config.args = ["6B86B273FF34FCE19D6B804EFF5A3F5747ADA4EAA22F1D49C01E52DDB7875B4B", "dgff"] 
-        write?.()
+        // config.args = [sha256(firId),metadata.ipnft] 
+        // write?.()
+        // console.log(isSuccess)
 
-        console.log(isSuccess)
+        const provider = new providers.Web3Provider(window.ethereum)
+        const contract = new Contract("0x628f0887dF785315a560d2248a579627FCa65056", CaseStorage.abi, provider)
+        console.log(provider)
+        const signer = await provider.getSigner();
+        const tx = await contract.connect(signer).setCase(utils.id(firId), metadata.ipnft)
+        const receipt = await tx.wait()
+        console.log(receipt)
     }
 
     return (     
