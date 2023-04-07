@@ -15,6 +15,8 @@ export default function FIR() {
   const [rel, setRel] = useState<string>();
   const [desc, setDesc] = useState<string>();
   const [ipc, setIpc] = useState<string>();
+  const [email,setEmail] = useState<string>();
+  const [content,setContent] = useState<string>();
 
   const client = new NFTStorage({ token: process.env.TOKEN });
 
@@ -70,6 +72,7 @@ export default function FIR() {
     });
     const cid = await client.storeBlob(blob);
     console.log(cid);
+    setContent(cid);  
 
     // const { root, car } = await packToBlob({ input: [new TextEncoder().encode(obj as any)] })
     // const expectedCid = root.toString()
@@ -142,6 +145,20 @@ export default function FIR() {
                       type="text"
                       value={nameC}
                       onChange={(e) => setNameC(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-wrap -mx-3 mb-6">
+                  <div className="w-full px-3">
+                    <label className="block uppercase tracking-wide text-gray-500 text-base font-normal mb-2">
+                      EMAIL OF COMPLAINTENT
+                    </label>
+                    <input
+                      className="appearance-none w-11/12 bg-gray-200 text-gray-900 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      id="ID7"
+                      type="text"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
                 </div>
@@ -268,6 +285,7 @@ export default function FIR() {
                   </div>
                 </div>
               </form>
+              <button onClick={() => window.location.href = `mailto:${email}?subject=FIR%20Content%20Identifier&body=CID=${content}`}>Send email</button>
             </div>
           </div>
         </div>
