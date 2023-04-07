@@ -1,8 +1,8 @@
 # DFIR 
-### Decentalized FIR System
+### Decentalized FIR System, deployed on Polygon Testnet
 
 ## Contract deployment information
-### Matic Mumbai Testnet
+### Polygon Mumbai Testnet
 
 | Contract      | Deployed Addess                             |
 | ------------- | -----------------------------------------   |
