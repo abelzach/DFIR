@@ -46,7 +46,9 @@ const Home: NextPage = () => {
           accounts[0] ==
             "0x1d1efc63bf932c1daf23c01fd1e18dd1bbe1e78a".toLowerCase() ||
           accounts[0] ==
-            "0xd76560aEfA91CBFE9a1Efd1D856bfC2001928C97".toLowerCase()
+            "0xd76560aEfA91CBFE9a1Efd1D856bfC2001928C97".toLowerCase() ||
+          accounts[0] ==
+            "0x360d0F0EB8eF6Db6c70fACB8b8066051a586FC8B".toLowerCase()
         ) {
           console.log("congrats");
           var inTenMinutes = new Date(new Date().getTime() + 10 * 60 * 1000);

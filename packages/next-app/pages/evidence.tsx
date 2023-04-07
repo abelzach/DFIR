@@ -97,11 +97,11 @@ export default function Evidence() {
               <form className="w-ful" onSubmit={handleSubmit}>
                 <div className="flex flex-wrap -mx-3 mb-6">
                   <div className="w-full px-3 pt-2">
-                    <label className="block uppercase tracking-wide text-gray-500 text-base font-normal mb-2">
+                    <label className="block mb-2 text-sm font-medium text-gray-900">
                       CASE ID
                     </label>
                     <input
-                      className="appearance-none w-11/12 bg-gray-200 text-gray-900 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      className="appearance-none w-10/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
                       id="ID"
                       type="text"
                       value={caseid}
@@ -113,9 +113,9 @@ export default function Evidence() {
                   <div className="w-11/12 flex flex-col">
                     <label
                       htmlFor="filepicker"
-                      className="block uppercase tracking-wide text-gray-500 text-base font-normal mb-2"
+                      className="block mb-2 text-sm font-medium text-gray-900"
                     >
-                      Pick files to store
+                      PICK FILES TO STORE
                     </label>
                     <input
                       type="file"
@@ -129,11 +129,11 @@ export default function Evidence() {
                 </div>
                 <div className="flex flex-wrap -mx-3 my-7">
                   <div className="w-full px-3">
-                    <label className="block uppercase tracking-wide text-gray-500 text-base font-normal mb-2">
+                    <label className="block mb-2 text-sm font-medium text-gray-900">
                       EVIDENCE DESCRIPTION
                     </label>
                     <textarea
-                      className=" no-resize appearance-none block w-11/12 bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 h-48 resize-none"
+                      className="appearance-none w-10/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block h-48 resize-none"
                       id="Desc"
                       value={desc}
                       onChange={(e) => setDesc(e.target.value)}
@@ -142,7 +142,7 @@ export default function Evidence() {
                 </div>
 
                 <div className="flex justify-end md:flex md:items-center">
-                  <div className="mr-24">
+                  <div className="mr-40">
                     <button
                       className="shadow bg-[#3661EB] w-48 h-12 my-4 text-slate-100focus:shadow-outline focus:outline-none text-white font-normal py-2 px-4 rounded"
                       type="submit"

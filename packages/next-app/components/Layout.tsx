@@ -11,9 +11,9 @@ const Layout = ({ children }: LayoutProps) => {
 
   function handleChange() {
     removeCookie("loggedin");
-    console.log("Sign out successfull")
+    console.log("Sign out successfull");
     router.push("/");
-  };
+  }
 
   return (
     <div>
@@ -150,7 +150,8 @@ const Layout = ({ children }: LayoutProps) => {
                 </a>
               </li>
             </ul>
-            <ul className="space-y-2 border-t border-gray-200 dark:border-gray-700">
+            {/* Divider border-t border-gray-200 dark:border-gray-700*/}
+            <ul className="space-y-3 border-t border-gray-200 dark:border-gray-700">
               <li className="mt-96 border-2 border-gray-500 rounded-md">
                 <a
                   onClick={handleChange}
@@ -169,7 +170,7 @@ const Layout = ({ children }: LayoutProps) => {
                       clip-rule="evenodd"
                     ></path>
                   </svg>
-                  <span className="ml-4" >Sign out</span>
+                  <span className="ml-4">Sign out</span>
                 </a>
               </li>
             </ul>

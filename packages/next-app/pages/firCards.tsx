@@ -7,6 +7,7 @@ import {
   Text,
   CardHeader,
   SimpleGrid,
+  CardBody,
 } from "@chakra-ui/react";
 import { FIR } from "./firdata";
 import { Contract, providers, utils } from "ethers";
@@ -129,89 +130,92 @@ export default function firCards() {
                         <CardHeader>
                           <Heading size="md">FIR ID {evi.firId}</Heading>
                         </CardHeader>
+                        <CardBody>
+                          <Box overflowX="auto" overflowY="auto" height="200px">
+                            <Stack divider={<StackDivider />} spacing="4">
+                              <Box>
+                                <Heading size="xs" textTransform="uppercase">
+                                  Police Station
+                                </Heading>
+                                <Text pt="2" fontSize="sm">
+                                  Kakkanad Police Station
+                                </Text>
+                              </Box>
 
-                        <Stack divider={<StackDivider />} spacing="4">
-                          <Box>
-                            <Heading size="xs" textTransform="uppercase">
-                              Police Station
-                            </Heading>
-                            <Text pt="2" fontSize="sm">
-                              Kakkanad Police Station
-                            </Text>
-                          </Box>
+                              <Box>
+                                <Heading size="xs" textTransform="uppercase">
+                                  Name of the Complainant
+                                </Heading>
+                                <Text pt="2" fontSize="sm">
+                                  {evi.nameC}
+                                </Text>
+                              </Box>
 
-                          <Box>
-                            <Heading size="xs" textTransform="uppercase">
-                              Name of the Complainant
-                            </Heading>
-                            <Text pt="2" fontSize="sm">
-                              {evi.nameC}
-                            </Text>
-                          </Box>
+                              <Box>
+                                <Heading size="xs" textTransform="uppercase">
+                                  Person Accussed
+                                </Heading>
+                                <Text pt="2" fontSize="sm">
+                                  {evi.nameA}
+                                </Text>
+                              </Box>
 
-                          <Box>
-                            <Heading size="xs" textTransform="uppercase">
-                              Person Accussed
-                            </Heading>
-                            <Text pt="2" fontSize="sm">
-                              {evi.nameA}
-                            </Text>
-                          </Box>
+                              <Box>
+                                <Heading size="xs" textTransform="uppercase">
+                                  DESC
+                                </Heading>
+                                <Text pt="2" fontSize="sm">
+                                  {evi.desc}
+                                </Text>
+                              </Box>
 
-                          <Box>
-                            <Heading size="xs" textTransform="uppercase">
-                              DESC
-                            </Heading>
-                            <Text pt="2" fontSize="sm">
-                              {evi.desc}
-                            </Text>
-                          </Box>
+                              <Box>
+                                <Heading size="xs" textTransform="uppercase">
+                                  Applicant Detail
+                                </Heading>
+                                <Text pt="2" fontSize="sm">
+                                  {evi.detName}
+                                </Text>
+                              </Box>
 
-                          <Box>
-                            <Heading size="xs" textTransform="uppercase">
-                              Applicant Detail
-                            </Heading>
-                            <Text pt="2" fontSize="sm">
-                              {evi.detName}
-                            </Text>
-                          </Box>
+                              <Box>
+                                <Heading size="xs" textTransform="uppercase">
+                                  Applicant's Parentage
+                                </Heading>
+                                <Text pt="2" fontSize="sm">
+                                  {evi.parent}
+                                </Text>
+                              </Box>
 
-                          <Box>
-                            <Heading size="xs" textTransform="uppercase">
-                              Applicant's Parentage
-                            </Heading>
-                            <Text pt="2" fontSize="sm">
-                              {evi.parent}
-                            </Text>
-                          </Box>
+                              <Box>
+                                <Heading size="xs" textTransform="uppercase">
+                                  Applicant's Address
+                                </Heading>
+                                <Text pt="2" fontSize="sm">
+                                  {evi.address}
+                                </Text>
+                              </Box>
 
-                          <Box>
-                            <Heading size="xs" textTransform="uppercase">
-                              Applicant's Address
-                            </Heading>
-                            <Text pt="2" fontSize="sm">
-                              {evi.address}
-                            </Text>
-                          </Box>
+                              <Box>
+                                <Heading size="xs" textTransform="uppercase">
+                                  Applicant's Contact detail
+                                </Heading>
+                                <Text pt="2" fontSize="sm">
+                                  {evi.contact}
+                                </Text>
+                              </Box>
 
-                          <Box>
-                            <Heading size="xs" textTransform="uppercase">
-                              Applicant's Contact detail
-                            </Heading>
-                            <Text pt="2" fontSize="sm">
-                              {evi.contact}
-                            </Text>
+                              <Box>
+                                <Heading size="xs" textTransform="uppercase">
+                                  Applicant's Relationship with Accussed
+                                </Heading>
+                                <Text pt="2" fontSize="sm">
+                                  {evi.rel}
+                                </Text>
+                              </Box>
+                            </Stack>
                           </Box>
-
-                          <Box>
-                            <Heading size="xs" textTransform="uppercase">
-                              Applicant's Relationship with Accussed
-                            </Heading>
-                            <Text pt="2" fontSize="sm">
-                              {evi.rel}
-                            </Text>
-                          </Box>
-                        </Stack>
+                        </CardBody>
                       </Card>
                     ))}
                   </SimpleGrid>

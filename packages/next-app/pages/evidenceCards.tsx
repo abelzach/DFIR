@@ -144,12 +144,14 @@ export default function evidenceCards() {
                 <div className="mx-10 my-8">
                   <SimpleGrid
                     spacing={10}
-                    templateColumns="repeat(auto-fill, minmax(300px, 4fr))"
+                    templateColumns="repeat(auto-fill, minmax(250px, 4fr))"
                   >
                     {arrEvi.map((evi) => (
                       <Card maxW="sm">
                         <CardBody>
                           <Image
+                            maxW={{ base: "100%", sm: "250px" }}
+                            maxH={{ base: "100%", sm: "250px" }}
                             src={`https://${evi.cid}.ipfs.w3s.link/image.png`}
                             alt="Green double couch with wooden legs"
                             borderRadius="lg"
@@ -157,7 +159,7 @@ export default function evidenceCards() {
                           <Stack mt="6" spacing="3">
                             <Heading size="md">Living room Sofa</Heading>
                             <Text>{evi.desc}</Text>
-                            <Text color="green.600" fontSize="2xl">
+                            <Text color="green.600" fontSize="xl">
                               {evi.caseId}
                             </Text>
                           </Stack>
