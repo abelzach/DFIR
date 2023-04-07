@@ -7,11 +7,11 @@ import {
   CardBody,
   SimpleGrid,
 } from "@chakra-ui/react";
-import { Evidences } from "./evidencedata";
 import { useEffect, useState } from "react";
 import CaseStorage from "../abi/CaseStorage.json";
 import { Contract, providers, utils } from "ethers";
 import Layout from "../components/Layout";
+import useEvidenceStore from "../stores/evidenceStore";
 
 interface Evidence {
   case_no: number;
@@ -19,9 +19,6 @@ interface Evidence {
 }
 
 interface Evidences_Props extends Array<Evidence> {}
-
-var Evi: Evidences_Props = Evidences;
-// console.log(Evi);
 
 // for await (const upload of client.list()) {
 //     console.log(`${upload.name} - cid: ${upload.cid} - size: ${upload.dagSize}`)
@@ -42,7 +39,7 @@ var Evi: Evidences_Props = Evidences;
 //     getEvidence();
 // }[]);
 
-export default function evidenceCards() {
+export default function EvidenceCards() {
   // let content = []
 
   //     (async () => {
@@ -53,8 +50,10 @@ export default function evidenceCards() {
 
   // console.log(content)
 
+  const evidenceData = useEvidenceStore((state) => state.evidenceArr);
+  const setEvidenceArr = useEvidenceStore((state) => state.setEvidence);
   const [arrEvi, setArrEvi] = useState<any[]>([]);
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     //Runs on the first render
@@ -82,24 +81,26 @@ export default function evidenceCards() {
         // console.log(dataArray)
       }
       // console.log(dataArray)
-      setArrEvi(dataArray);
-      console.log(arrEvi);
+      setEvidenceArr(dataArray);
+      // console.log(arrEvi);
     }
     getEvi();
-    console.log(arrEvi);
+    console.log(evidenceData);
     //And any time any dependency value changes
-  }, [arrEvi.length]);
+  }, [evidenceData.length]);
 
   const searchFilter = (array) => {
-    return array.filter(
-      (el) => Object.keys(el).some((parameter) => el[parameter].toString().toLowerCase().includes(query) )
-    )
-  }
-  const filtered = searchFilter(arrEvi)
+    return array.filter((el) =>
+      Object.keys(el).some((parameter) =>
+        el[parameter].toString().toLowerCase().includes(query)
+      )
+    );
+  };
+  const filtered = searchFilter(evidenceData);
 
   const handleChange = (e) => {
-    setQuery(e.target.value)
-  }
+    setQuery(e.target.value);
+  };
 
   return (
     <Layout>
@@ -131,9 +132,9 @@ export default function evidenceCards() {
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                       ></path>
                     </svg>
@@ -161,7 +162,7 @@ export default function evidenceCards() {
                     templateColumns="repeat(auto-fill, minmax(250px, 4fr))"
                   >
                     {filtered.map((evi) => (
-                      <Card maxW="sm">
+                      <Card maxW="sm" key={evi.cid}>
                         <CardBody>
                           <Image
                             maxW={{ base: "100%", sm: "250px" }}
@@ -173,7 +174,6 @@ export default function evidenceCards() {
                           <Stack mt="6" spacing="3">
                             <Heading size="md">Case ID : {evi.caseId} </Heading>
                             <Text>{evi.desc}</Text>
-                            
                           </Stack>
                         </CardBody>
                       </Card>

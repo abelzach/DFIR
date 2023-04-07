@@ -9,12 +9,12 @@ import {
   SimpleGrid,
   CardBody,
 } from "@chakra-ui/react";
-import { FIR } from "./firdata";
 import { Contract, providers, utils } from "ethers";
 import CaseStorage from "../abi/CaseStorage.json";
 import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import { render } from "react-dom";
+import useFirStore from "../stores/firStore";
 
 interface FIRs {
   fir_no: number;
@@ -30,12 +30,11 @@ interface FIRs {
 
 interface FIR_Props extends Array<FIRs> {}
 
-var FIRCard: FIR_Props = FIR;
-// console.log(FIRCard);
-
-export default function firCards() {
-  const [arrFir, setArrFir] = useState<any[]>([]);
-  const [query, setQuery] = useState('');
+export default function FirCards() {
+  // const [arrFir, setArrFir] = useState<any[]>([]);
+  const [query, setQuery] = useState("");
+  const firData = useFirStore((state) => state.firArr);
+  const setFirArr = useFirStore((state) => state.setFir);
 
   useEffect(() => {
     //Runs on the first render
@@ -62,24 +61,30 @@ export default function firCards() {
         // console.log(dataArray)
       }
       // console.log(dataArray)
-      setArrFir(dataArray);
-      console.log(arrFir);
+      // setArrFir(dataArray);
+      setFirArr(dataArray);
+      // console.log(arrFir);
     }
     getFir();
-    console.log(arrFir);
+    // console.log(arrFir);
+    console.log("this is zustand");
+    console.log(firData);
+
     //And any time any dependency value changes
-  }, [arrFir.length]);
+  }, [firData.length]);
 
   const searchFilter = (array) => {
-    return array.filter(
-      (el) => Object.keys(el).some((parameter) => el[parameter].toString().toLowerCase().includes(query) )
-    )
-  }
-  const filtered = searchFilter(arrFir)
+    return array.filter((el) =>
+      Object.keys(el).some((parameter) =>
+        el[parameter].toString().toLowerCase().includes(query)
+      )
+    );
+  };
+  const filtered = searchFilter(firData);
 
   const handleChange = (e) => {
-    setQuery(e.target.value)
-  }
+    setQuery(e.target.value);
+  };
 
   return (
     <Layout>
@@ -111,9 +116,9 @@ export default function firCards() {
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                       ></path>
                     </svg>
@@ -141,7 +146,7 @@ export default function firCards() {
                     templateColumns="repeat(auto-fill, minmax(300px, 4fr))"
                   >
                     {filtered.map((evi) => (
-                      <Card>
+                      <Card key={evi.firId}>
                         <CardHeader>
                           <Heading size="md">FIR ID {evi.firId}</Heading>
                         </CardHeader>
@@ -195,7 +200,7 @@ export default function firCards() {
 
                               <Box>
                                 <Heading size="xs" textTransform="uppercase">
-                                  Applicant's Parentage
+                                  Applicant`&apos;`s Parentage
                                 </Heading>
                                 <Text pt="2" fontSize="sm">
                                   {evi.parent}
@@ -204,7 +209,7 @@ export default function firCards() {
 
                               <Box>
                                 <Heading size="xs" textTransform="uppercase">
-                                  Applicant's Address
+                                  Applicant`&apos;`s Address
                                 </Heading>
                                 <Text pt="2" fontSize="sm">
                                   {evi.address}
@@ -213,7 +218,7 @@ export default function firCards() {
 
                               <Box>
                                 <Heading size="xs" textTransform="uppercase">
-                                  Applicant's Contact detail
+                                  Applicant`&apos;`s Contact detail
                                 </Heading>
                                 <Text pt="2" fontSize="sm">
                                   {evi.contact}
@@ -222,7 +227,7 @@ export default function firCards() {
 
                               <Box>
                                 <Heading size="xs" textTransform="uppercase">
-                                  Applicant's Relationship with Accussed
+                                  Applicant`&apos;`s Relationship with Accussed
                                 </Heading>
                                 <Text pt="2" fontSize="sm">
                                   {evi.rel}
@@ -242,5 +247,4 @@ export default function firCards() {
       </div>
     </Layout>
   );
-
 }

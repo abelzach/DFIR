@@ -17,23 +17,27 @@ export default function FIR() {
   const [ipc, setIpc] = useState<string>();
   const [email, setEmail] = useState<string>();
   const [content, setContent] = useState<string>();
-
+  
   const client = new NFTStorage({ token: process.env.TOKEN });
-
+  
   // const { config } = usePrepareContractWrite({
-  //     mode: 'recklesslyUnprepared',
-  //     address: '0x628f0887dF785315a560d2248a579627FCa65056',
-  //     abi: CaseStorage.abi,
-  //     functionName: 'setCase',
-
+    //     mode: 'recklesslyUnprepared',
+    //     address: '0x628f0887dF785315a560d2248a579627FCa65056',
+    //     abi: CaseStorage.abi,
+    //     functionName: 'setCase',
+    
   //   }as any)
 
   //   const contract = useContract({
-  //     address: '0x628f0887dF785315a560d2248a579627FCa65056',
+    //     address: '0x628f0887dF785315a560d2248a579627FCa65056',
   //     abi: CaseStorage.abi,
   //     signerOrProvider : signer,
   //   }as any)
-
+  
+  
+  
+  
+  
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const obj = {
@@ -86,17 +90,17 @@ export default function FIR() {
     // config.args = [sha256(firId),metadata.ipnft]
     // write?.()
     // console.log(isSuccess)
-
+    
     const provider = new providers.Web3Provider(window.ethereum);
     const contract = new Contract(
       "0x194df8b92A61973403918D7428CaDA647591CbDa",
       CaseStorage.abi,
       provider
-    );
-    // console.log(provider)
-    const signer = await provider.getSigner();
-
-    const tx = await contract.connect(signer).setCase(firId, cid);
+      );
+      // console.log(provider)
+      const signer = await provider.getSigner();
+      
+      const tx = await contract.connect(signer).setCase(firId, cid);
     console.log(utils.id(firId));
     const receipt = await tx.wait();
     console.log(receipt);
@@ -106,6 +110,20 @@ export default function FIR() {
     // window.location.href = `mailto:${email}?subject=FIR%20Content%20Identifier&body=CID=${content}`
     alert("Success");
   };
+  
+  
+  
+  
+  // const [ipcData, setipcData] = useState<string>("murder");
+
+  const GenerateIPCs = async (e: any) => {
+
+    fetch(`https://api-sk9o.onrender.com/title/${desc}` )
+    .then((response) => response.json())
+    .then((data) => console.log(data));
+  }
+
+
 
   return (
     <Layout>
@@ -259,6 +277,14 @@ export default function FIR() {
                       value={desc}
                       onChange={(e) => setDesc(e.target.value)}
                     ></textarea>
+                    <button
+                    type="button"
+                      className="shadow border-2 border-[#3661EB] w-48 h-12 my-4 text-slate-100focus:shadow-outline focus:outline-none text-[#3661EB] font-normal py-2 px-4 rounded"
+                      onClick= {GenerateIPCs}
+                      
+                    >
+                      Generate IPC
+                    </button>
                   </div>
                 </div>
                 <div className="flex flex-wrap -mx-3 mb-6">
@@ -278,6 +304,7 @@ export default function FIR() {
                 <div className="flex flex-row">
                   <div className="flex justify-end w-full gap-4 md:flex md:items-center pr-40">
                     <button
+                    type="button"
                       className="shadow border-2 border-[#3661EB] w-48 h-12 my-4 text-slate-100focus:shadow-outline focus:outline-none text-[#3661EB] font-normal py-2 px-4 rounded"
                       onClick={() =>
                         (window.location.href = `mailto:${email}?subject=FIR%20Content%20Identifier&body=CID=${content}`)

@@ -21,6 +21,7 @@
     "strict": false
   },
   "include": [
+    "additional.d.ts",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"

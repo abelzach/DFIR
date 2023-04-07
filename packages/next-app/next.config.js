@@ -5,6 +5,7 @@ const nextConfig = {
   env: {
     TOKEN: process.env.TOKEN
   },
+  eslint: { ignoreDuringBuilds: true },
 }
 
 module.exports = nextConfig

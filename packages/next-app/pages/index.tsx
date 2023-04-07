@@ -1,22 +1,8 @@
 import type { NextPage } from "next";
-import Image from "next/image";
-import Head from "next/head";
-import styles from "../styles/Home.module.css";
-import {
-  Heading,
-  Button,
-  StatGroup,
-  Stat,
-  StatLabel,
-  StatNumber,
-  StatHelpText,
-  StatArrow,
-} from "@chakra-ui/react";
-import { ethers } from "ethers";
-import { useEffect, useState } from "react";
+
+import { useState } from "react";
 // import Cookies from "js-cookie";
 import { useRouter } from "next/router";
-import { NextResponse } from "next/server";
 import { getCookie, setCookie, removeCookie } from "typescript-cookie";
 
 // npm i --save-dev @types/js-cookie
@@ -213,7 +199,7 @@ const Home: NextPage = () => {
               <span className="font-black text-[#3661EB]">Robust</span> crime{" "}
               <span>
                 <div className="h-2">
-                  <img src="/Line-8.png" className=""></img>
+                  <img src="/Line-8.png" className=""  alt="line"/>
                 </div>
               </span>
               management system
@@ -234,7 +220,7 @@ const Home: NextPage = () => {
           </div>
         </div>
         <div className="w-6/12 bg-[#F3F5F9] h-screen overflow-hidden">
-          <img src="/cover.png" className="h-full object-contain"></img>
+          <img src="cover.png" className="h-full object-contain"  alt="cover"/>
         </div>
       </div>
     </div>
