@@ -38,7 +38,7 @@ export default function Evidence() {
     const obj = { caseId: caseid, cid: cid, desc: desc };
     const provider = new providers.Web3Provider(window.ethereum);
     const contract = new Contract(
-      "0x2050127b520b4a2b796b1ac97A3FA1e4B2bc972C",
+      "0x194df8b92A61973403918D7428CaDA647591CbDa",
       CaseStorage.abi,
       provider
     );
@@ -55,6 +55,7 @@ export default function Evidence() {
 
     const ab = await contract.connect(signer).getEvidence(caseid);
     console.log(ab);
+    alert("Success");
   }
   // const handleSubmit = async (e:any) => {
   //     e.preventDefault()

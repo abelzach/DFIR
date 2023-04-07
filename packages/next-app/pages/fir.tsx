@@ -89,7 +89,7 @@ export default function FIR() {
 
     const provider = new providers.Web3Provider(window.ethereum);
     const contract = new Contract(
-      "0x2050127b520b4a2b796b1ac97A3FA1e4B2bc972C",
+      "0x194df8b92A61973403918D7428CaDA647591CbDa",
       CaseStorage.abi,
       provider
     );
@@ -104,6 +104,7 @@ export default function FIR() {
     const ab = await contract.connect(signer).getCase(firId);
     console.log(ab);
     // window.location.href = `mailto:${email}?subject=FIR%20Content%20Identifier&body=CID=${content}`
+    alert("Success");
   };
 
   return (

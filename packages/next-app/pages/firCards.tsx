@@ -14,6 +14,7 @@ import { Contract, providers, utils } from "ethers";
 import CaseStorage from "../abi/CaseStorage.json";
 import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
+import { render } from "react-dom";
 
 interface FIRs {
   fir_no: number;
@@ -34,12 +35,14 @@ var FIRCard: FIR_Props = FIR;
 
 export default function firCards() {
   const [arrFir, setArrFir] = useState<any[]>([]);
+  const [query, setQuery] = useState('');
+
   useEffect(() => {
     //Runs on the first render
     async function getFir() {
       const provider = new providers.Web3Provider(window.ethereum);
       const contract = new Contract(
-        "0x2050127b520b4a2b796b1ac97A3FA1e4B2bc972C",
+        "0x194df8b92A61973403918D7428CaDA647591CbDa",
         CaseStorage.abi,
         provider
       );
@@ -66,6 +69,17 @@ export default function firCards() {
     console.log(arrFir);
     //And any time any dependency value changes
   }, [arrFir.length]);
+
+  const searchFilter = (array) => {
+    return array.filter(
+      (el) => Object.keys(el).some((parameter) => el[parameter].toString().toLowerCase().includes(query) )
+    )
+  }
+  const filtered = searchFilter(arrFir)
+
+  const handleChange = (e) => {
+    setQuery(e.target.value)
+  }
 
   return (
     <Layout>
@@ -105,6 +119,7 @@ export default function firCards() {
                     </svg>
                   </div>
                   <input
+                    onChange={handleChange}
                     type="search"
                     id="default-search"
                     className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
@@ -125,7 +140,7 @@ export default function firCards() {
                     spacing={10}
                     templateColumns="repeat(auto-fill, minmax(300px, 4fr))"
                   >
-                    {arrFir.map((evi) => (
+                    {filtered.map((evi) => (
                       <Card>
                         <CardHeader>
                           <Heading size="md">FIR ID {evi.firId}</Heading>
@@ -227,4 +242,5 @@ export default function firCards() {
       </div>
     </Layout>
   );
+
 }
