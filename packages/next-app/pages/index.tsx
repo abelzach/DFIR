@@ -1,62 +1,70 @@
-import type { NextPage } from 'next';
-import Head from 'next/head';
-import styles from '../styles/Home.module.css';
-import { Heading, Button, StatGroup, Stat, StatLabel, StatNumber, StatHelpText, StatArrow} from '@chakra-ui/react'
+import type { NextPage } from "next";
+import Image from "next/image";
+import Head from "next/head";
+import styles from "../styles/Home.module.css";
+import {
+  Heading,
+  Button,
+  StatGroup,
+  Stat,
+  StatLabel,
+  StatNumber,
+  StatHelpText,
+  StatArrow,
+} from "@chakra-ui/react";
 import { ethers } from "ethers";
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 // import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { NextResponse } from "next/server";
-import { getCookie, setCookie, removeCookie } from 'typescript-cookie'
+import { getCookie, setCookie, removeCookie } from "typescript-cookie";
 
 // npm i --save-dev @types/js-cookie
 
 const Home: NextPage = () => {
-
-  
   const router = useRouter();
-  const [walletAddress,setWalletAddress] = useState("");
+  const [walletAddress, setWalletAddress] = useState("");
 
   async function requestAccount() {
     //console.log("Inside Function requestAccount");
 
-    if(window.ethereum) {
+    if (window.ethereum) {
       //console.log("Detected Metamsk");
-      try{
+      try {
         const accounts = await window.ethereum.request({
           method: "eth_requestAccounts",
         });
         console.log(accounts);
-        setWalletAddress(accounts[0])
-
-
+        setWalletAddress(accounts[0]);
 
         // 0x1d1eFC63bf932c1daF23c01FD1e18dD1bBe1E78a
-        if(accounts[0] == '0x6855cc76b0f1f87a92f204346647adb557b28860'.toLowerCase() 
-        || accounts[0] == '0x52bB3A42564c0Df72ECB111D24BE82C614497A22'.toLowerCase() 
-        || accounts[0] == '0x1d1efc63bf932c1daf23c01fd1e18dd1bbe1e78a'.toLowerCase()
-        || accounts[0] == '0xd76560aEfA91CBFE9a1Efd1D856bfC2001928C97'.toLowerCase())
-        {
+        if (
+          accounts[0] ==
+            "0x6855cc76b0f1f87a92f204346647adb557b28860".toLowerCase() ||
+          accounts[0] ==
+            "0x52bB3A42564c0Df72ECB111D24BE82C614497A22".toLowerCase() ||
+          accounts[0] ==
+            "0x1d1efc63bf932c1daf23c01fd1e18dd1bbe1e78a".toLowerCase() ||
+          accounts[0] ==
+            "0xd76560aEfA91CBFE9a1Efd1D856bfC2001928C97".toLowerCase()
+        ) {
           console.log("congrats");
           var inTenMinutes = new Date(new Date().getTime() + 10 * 60 * 1000);
 
-          setCookie("loggedin", "true",{ expires: inTenMinutes });
+          setCookie("loggedin", "true", { expires: inTenMinutes });
           // console.log(req.cookies.get("loggedin"));
           // router.push("/fir");
-          console.log(getCookie("loggedin"))
-          
-        }
-        else{
+          console.log(getCookie("loggedin"));
+          router.push("/fir");
+        } else {
           console.log("sorry.. wrong address");
-          
-          removeCookie('loggedin')
+
+          removeCookie("loggedin");
         }
-      }
-      catch(error) {
+      } catch (error) {
         console.log("Error connecting");
       }
-    }
-    else {
+    } else {
       alert("Please install metamask");
     }
 
@@ -74,8 +82,8 @@ const Home: NextPage = () => {
   // }
 
   return (
-    <div className='px-2 font-inter'>
-    {/* <nav classNameName="flex items-center justify-between flex-wrap bg-teal-500 p-4">
+    <div className="pl-2 font-poppins">
+      {/* <nav classNameName="flex items-center justify-between flex-wrap bg-teal-500 p-4">
       <div classNameName="flex items-center flex-shrink-0 text-white mr-10">
         <span classNameName="font-bold text-xl tracking-tight">DeFIR</span>
       </div>
@@ -131,12 +139,12 @@ const Home: NextPage = () => {
         Decentralized FIR 
       </Heading>
         <br/> */}
-        
-        {/* <Link href="/fir">FIR REGISTERATION PORTAL</Link> */}
-        {/* <Link href="/evidence">Evidence Storage</Link> */}
-        {/* <Link href="/evidenceCards">Evidence Cards</Link> */}
-        
-        {/* <Heading noOfLines={1}>
+
+      {/* <Link href="/fir">FIR REGISTERATION PORTAL</Link> */}
+      {/* <Link href="/evidence">Evidence Storage</Link> */}
+      {/* <Link href="/evidenceCards">Evidence Cards</Link> */}
+
+      {/* <Heading noOfLines={1}>
           Address : {walletAddress}
         </Heading>
       </main>
@@ -145,84 +153,90 @@ const Home: NextPage = () => {
         <p>Decentralized FIR system - Main project</p>
       </footer>
     </div> */}
-<nav className="sm:px-4 py-2.5 opacity-100">
-  <div className="container flex px-16 flex-wrap items-center justify-between mx-auto">
-    <a href="/" className="flex items-center">
-        <span className="self-center text-xl font-bold whitespace-nowrap dark:text-black">DFIR</span>
-    </a>
-    <div className="hidden w-full md:block md:w-auto" id="navbar-default">
-      <ul className="flex flex-row">
-      <li className='mt-2'>
-      <a href="/fir" className="mx-5 my-5">
-            FIR Registeration Portal
-      </a>
-      </li>
-      <li className='mt-2'>
-      <a href="/dashboard" className="mx-5 my-5">
-            Dashboard
-      </a>
-      </li>
-      <li className='mt-2'>
-          <a href="/evidence" className="mx-5 my-5">
-                Evidence storage
+      {/* <nav className="sm:px-4 py-2.5 opacity-100">
+        <div className="container flex px-16 flex-wrap items-center justify-between mx-auto">
+          <a href="/" className="flex items-center">
+            <span className="self-center text-xl font-bold whitespace-nowrap dark:text-black">
+              DFIR
+            </span>
           </a>
-          </li>
-          <li className='mt-2'>
-          <a href="/firCards" className="mx-5 my-5">
-                FIR
-          </a>
-          </li>
-          <li className='mt-2'>
-          <a href="/evidenceCards" className="mx-5 my-5">
-                Evidences
-          </a>
-          </li>
-        <li>
-          <button onClick={requestAccount} className="block py-2 pl-3 pr-4 text-black border-2 border-black translate-x-6">{walletAddress === "" ? "Connect Wallet" : "Logged in as " + walletAddress.substring(0,8) + "..." } </button>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
-<div className='flex flex-wrap h-screen flex-row justify-between'>
-  <div className=' w-7/12'>
-    <div className='flex flex-col px-20 gap-6'>
-    <h1 className='text-7xl font-bold mt-16 leading-tight'>
-    Bulletproof crime management system
-    </h1>
-    <p className='text-2xl text-slate-600'>
-    Keep track of FIRs, evidences and crimes securely with the power of blockchain technology
-    </p>
-    <button className='bg-gradient-to-br from-teal-200 via-teal-400 to-teal-800 w-48 h-12 mt-4 text-slate-100 font-medium'>
-      Book a call with us
-    </button>
-    <div className='border-t-2 border-black mt-14 p-8 flex flex-row justify-evenly'>
-    <div className='flex flex-col content-center'>
-      <p className='text-5xl font-bold text-black'>
-        35,587
-      </p>
-      <p className='mt-2 text-xl font-medium'>
-        FIRs registers
-      </p>
+          <div className="hidden w-full md:block md:w-auto" id="navbar-default">
+            <ul className="flex flex-row">
+              <li className="mt-2">
+                <a href="/fir" className="mx-5 my-5">
+                  FIR Registeration Portal
+                </a>
+              </li>
+              <li className="mt-2">
+                <a href="/dashboard" className="mx-5 my-5">
+                  Dashboard
+                </a>
+              </li>
+              <li className="mt-2">
+                <a href="/evidence" className="mx-5 my-5">
+                  Evidence storage
+                </a>
+              </li>
+              <li className="mt-2">
+                <a href="/firCards" className="mx-5 my-5">
+                  FIR
+                </a>
+              </li>
+              <li className="mt-2">
+                <a href="/evidenceCards" className="mx-5 my-5">
+                  Evidences
+                </a>
+              </li>
+              <li>
+                <button
+                  onClick={requestAccount}
+                  className="block py-2 pl-3 pr-4 text-black border-2 border-black translate-x-6"
+                >
+                  {walletAddress === ""
+                    ? "Connect Wallet"
+                    : "Logged in as " +
+                      walletAddress.substring(0, 8) +
+                      "..."}{" "}
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav> */}
+      <div className="flex flex-wrap h-screen flex-row justify-between">
+        <div className="flex flex-col w-6/12">
+          <div className="flex flex-col justify-center px-20 gap-5">
+            <p className="font-black text-2xl py-4">DFIR</p>
+            <h1 className="text-7xl font-semibold text-[#131321] mt-16 leading-[90px]">
+              <span className="font-black text-[#3661EB]">Robust</span> crime{" "}
+              <span>
+                <div className="h-2">
+                  <img src="/Line-8.png" className=""></img>
+                </div>
+              </span>
+              management system
+            </h1>
+            <p className="text-2xl w-full text-[#888B94] font-normal">
+              Built in dashboards, FIR management and evidence storage using
+              IPFS
+            </p>
+            <button
+              className="bg-[#3661EB] w-full h-14 mt-4 text-slate-100 font-normal rounded-md"
+              onClick={requestAccount}
+            >
+              Connect wallet
+            </button>
+            <button className="bg-[#e9ecee] w-full h-14 text-[#80858B] font-medium rounded-md">
+              Learn more about metamask policies
+            </button>
+          </div>
+        </div>
+        <div className="w-6/12 bg-[#F3F5F9] h-screen overflow-hidden">
+          <img src="/cover.png" className="h-full object-contain"></img>
+        </div>
       </div>
-      <div className='flex flex-col content-center'>
-      <p className='text-5xl font-bold'>
-        1015
-      </p>
-      <p className='mt-2 text-xl font-medium'>
-        Evidences stored
-      </p>
-      </div>
     </div>
-    </div>
-  </div>
-  <div className='w-5/12 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-gray-900 via-gray-100 to-gray-900'>
-    {/* <h1>
-    Bulletproof crime management system
-    </h1> */}
-  </div>
-</div>
-</div>
-)}
+  );
+};
 
 export default Home;
