@@ -6,7 +6,7 @@
 
 | Contract      | Deployed Addess                             |
 | ------------- | -----------------------------------------   |
-| CaseStorage   | 0x194df8b92A61973403918D7428CaDA647591CbDa  |
+| CaseStorage   | 0x42ec4CF3eB8c312aF7189b61099ECB1331d46911  |
 
 
 ## Setup
