@@ -60,7 +60,7 @@ export default function EvidenceCards() {
     async function getEvi() {
       const provider = new providers.Web3Provider(window.ethereum);
       const contract = new Contract(
-        "0x194df8b92A61973403918D7428CaDA647591CbDa",
+        "0x42ec4CF3eB8c312aF7189b61099ECB1331d46911",
         CaseStorage.abi,
         provider
       );
